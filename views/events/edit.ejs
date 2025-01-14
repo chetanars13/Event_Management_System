@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <a href="/events" class="text-xl font-bold text-gray-900 hover:text-blue-600">
+                Event Management
+            </a>
+        </div>
+    </nav>
+
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-2xl font-semibold text-gray-900 mb-6">Edit Event</h1>
+
+        <form action="/events/<%= event._id %>?_method=PUT" method="POST">
+            <div>
+                <label for="name">Event Name</label>
+                <input type="text" name="name" id="name" value="<%= event.name %>" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="description">Description</label>
+                <textarea name="description" id="description" rows="3" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"><%= event.description %></textarea>
+            </div>
+
+            <div>
+                <label for="location">Location</label>
+                <input type="text" name="location" id="location" value="<%= event.location %>" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="date">Date</label>
+                <input type="date" name="date" id="date" value="<%= new Date(event.date).toISOString().split('T')[0] %>"
+                    required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+                <label for="organizers">Organizers</label>
+                <select name="organizers" id="organizers" multiple
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <% attendees.forEach(attendee=> { %>
+                        <% if (attendee.role==="Organizer" ) { %>
+                            <option value="<%= attendee._id %>" <%=event.organizers.some(org=> org._id.toString() ===
+                                attendee._id.toString()) ? "selected" : "" %>
+                                >
+                                <%= attendee.name %>
+                            </option>
+                            <% } %>
+                                <% }) %>
+                </select>
+            </div>
+            
+            <div>
+                <label for="attendees">Attendees</label>
+                <select name="attendees" id="attendees" multiple
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <% attendees.forEach(attendee=> { %>
+                        <% if (attendee.role==="Participant" ) { %>
+                            <option value="<%= attendee._id %>" <%=event.attendees.some(att=> att._id.toString() ===
+                                attendee._id.toString()) ? "selected" : "" %>
+                                >
+                                <%= attendee.name %>
+                            </option>
+                            <% } %>
+                                <% }) %>
+                </select>
+            </div>
+
+
+            <div class="flex justify-end space-x-3">
+                <a href="/events"
+                    class="inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+                    Cancel
+                </a>
+                <button type="submit"
+                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700">
+                    Update Event
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

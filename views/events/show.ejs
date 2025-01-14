@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <a href="/events" class="text-xl font-bold text-gray-900 hover:text-blue-600">
+                Event Management
+            </a>
+        </div>
+    </nav>
+
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-6 text-center border-b pb-4">
+            <%= event.name %>
+        </h1>
+
+        <div class="space-y-4 text-lg">
+            <p><strong>Description:</strong> <span class="text-gray-700">
+                    <%= event.description %>
+                </span></p>
+            <p><strong>Location:</strong> <span class="text-gray-700">
+                    <%= event.location %>
+                </span></p>
+            <p><strong>Date:</strong> <span class="text-gray-700">
+                    <%= new Date(event.date).toLocaleDateString() %>
+                </span></p>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold text-gray-900 border-b pb-2">Organizers</h2>
+            <ul class="list-disc pl-5 mt-4 text-lg">
+                <% event.organizers.forEach(organizer=> { %>
+                    <li>
+                        <strong class="text-gray-900">
+                            <%= organizer.name %>
+                        </strong>
+                        (<a href="mailto:<%= organizer.email %>" class="text-blue-600 hover:underline">
+                            <%= organizer.email %>
+                        </a>)
+                    </li>
+                    <% }) %>
+            </ul>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold text-gray-900 border-b pb-2">Attendees</h2>
+            <ul class="list-disc pl-5 mt-4 text-lg">
+                <% event.attendees.forEach(attendee=> { %>
+                    <li>
+                        <strong class="text-gray-900">
+                            <%= attendee.name %>
+                        </strong>
+                        (<a href="mailto:<%= attendee.email %>" class="text-blue-600 hover:underline">
+                            <%= attendee.email %>
+                        </a>)
+                    </li>
+                    <% }) %>
+            </ul>
+        </div>
+
+        <div class="mt-10 flex justify-center space-x-4">
+            <a href="/events/<%= event._id %>/edit"
+                class="inline-flex items-center justify-center rounded-md bg-yellow-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-yellow-600">
+                Edit Event
+            </a>
+            <form action="/events/<%= event._id %>?_method=DELETE" method="POST" class="inline">
+                <button type="submit"
+                    class="inline-flex items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700">
+                    Delete Event
+                </button>
+            </form>
+            <a href="/events"
+                class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+                Back to Events
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>
